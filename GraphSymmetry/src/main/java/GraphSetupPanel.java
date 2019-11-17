@@ -1,4 +1,4 @@
-import java.awt.Color;
+ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -55,8 +55,27 @@ public class GraphSetupPanel extends JPanel{
 			}
 		}
 		
-		pointList = points;
-		return points;
+		ArrayList<Point> fin = new ArrayList<Point>();
+		for(int scan = 0; scan < points.size(); scan++) {
+			if(!fin.contains(new Point(points.get(scan).y, points.get(scan).x))) {
+				fin.add(points.get(scan));
+			}
+			
+		}
+		
+		for(int scan = 0; scan < fin.size(); scan++) {
+			System.out.println(fin.get(scan));
+		}
+		
+		
+		pointList = fin;
+		return fin;
+	}
+	
+	private ArrayList<GraphVertex> convertArray(){
+		
+		
+		return null;
 	}
 	
 	private void setupComponents() {
