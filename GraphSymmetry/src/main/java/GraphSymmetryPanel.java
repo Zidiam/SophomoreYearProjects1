@@ -14,6 +14,7 @@ public class GraphSymmetryPanel extends JPanel{
 	private GraphSetupPanel graphsetupPanel, graphsetupPanel2;
 	private JButton setupButton, createButton, symmetryButton;
 	private JPanel graphs;
+	private GraphSymmetryTestPanel symmetryTestPanel;
 	public GraphSymmetryPanel() {
 		addKeyListener(new DirectionListener());
 		timer = new Timer(speed, new ReboundListener());
@@ -23,6 +24,7 @@ public class GraphSymmetryPanel extends JPanel{
 		graphs = new JPanel();
 		graphsetupPanel = new GraphSetupPanel();
 		graphsetupPanel2 = new GraphSetupPanel();
+		symmetryTestPanel = new GraphSymmetryTestPanel(graphsetupPanel.getGraphVertex(), graphsetupPanel2.getGraphVertex());
 		setupgraphPanel();
 		setupButtons();
 		//setLayout(null);
@@ -37,7 +39,7 @@ public class GraphSymmetryPanel extends JPanel{
 	
 	public void setupgraphPanel() {
 		remove(graphs);
-		
+		remove(symmetryTestPanel);
 		
 		graphs = new JPanel();
 		graphs.setLayout(new GridLayout());
@@ -62,6 +64,7 @@ public class GraphSymmetryPanel extends JPanel{
 	
 	public void creategraphPanel() {
 		remove(graphs);
+		remove(symmetryTestPanel);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		JScrollPane scrollPane2 = new JScrollPane();
@@ -75,7 +78,6 @@ public class GraphSymmetryPanel extends JPanel{
 		scrollPane = new JScrollPane(graphPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        //scrollPane.setBounds(0, 50, 1350, 625);
     	
         graphPanel2.setuppointList(graphsetupPanel2.getpointList(), graphsetupPanel2.getVerticies());
 		scrollPane2 = new JScrollPane(graphPanel2);
@@ -109,7 +111,13 @@ public class GraphSymmetryPanel extends JPanel{
 	}
 	
 	public void createsymmetryPanel() {
+		remove(graphs);
+		remove(symmetryTestPanel);
 		
+		symmetryTestPanel = new GraphSymmetryTestPanel(graphsetupPanel.getGraphVertex(), graphsetupPanel2.getGraphVertex());
+		
+		add(symmetryTestPanel, BorderLayout.CENTER);
+		this.updateUI();
 	}
 	
 	public void paintComponent(Graphics page)
