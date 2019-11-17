@@ -29,13 +29,14 @@ public class GraphPanel extends JPanel{
 		setUpPoints();
 		drawLines(page);
 		drawPoints(page);
-		
+		this.updateUI();
 	}
 	 
 	 public void setUpPoints() {
 		 	graphPointList = new ArrayList<GraphPoint>();
 		 	int n = verticies;
-		 	this.setPreferredSize(new Dimension(1250 + n*3, 750 + n*3));
+		 	//the 100 can be motified by scrolling!
+		 	this.setPreferredSize(new Dimension(n*50, n*50));
 		 	int a = this.getWidth() / 2;
 	        int b = this.getHeight() / 2 - 75;
 	        int m = Math.min(a, b);

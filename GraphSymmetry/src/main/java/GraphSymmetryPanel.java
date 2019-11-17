@@ -20,12 +20,14 @@ public class GraphSymmetryPanel extends JPanel{
 		addKeyListener(new DirectionListener());
 		timer = new Timer(speed, new ReboundListener());
 		
+		setLayout(new BorderLayout());
+		
 		graphsetupPanel = new GraphSetupPanel();
 		graphPanel = new GraphPanel();
 		setupgraphPanel();
 		setupButtons();
+		//setLayout(null);
 		
-		setLayout(null);
 		
 		setBackground(Color.green);
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -40,9 +42,9 @@ public class GraphSymmetryPanel extends JPanel{
 		scrollPane = new JScrollPane(graphsetupPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 50, 1350, 625);
+        //scrollPane.setBounds(0, 50, 1350, 625);
     	
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
         this.updateUI();
 	}
 	
@@ -53,24 +55,27 @@ public class GraphSymmetryPanel extends JPanel{
 		scrollPane = new JScrollPane(graphPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 50, 1350, 625);
+        //scrollPane.setBounds(0, 50, 1350, 625);
     	
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
       	this.updateUI();
 	}
 	
 	public void setupButtons() {
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BorderLayout());
 		setupButton = new JButton("Setup");
 		createButton = new JButton("Create");
 		
 		setupButton.addActionListener(new ButtonListener());
 		createButton.addActionListener(new ButtonListener());
 		
-		setupButton.setBounds(0, 0, 75, 25);
-		createButton.setBounds(100, 0, 75, 25);
+		//setupButton.setBounds(0, 0, 75, 25);
+		//createButton.setBounds(100, 0, 75, 25);
 		
-		add(setupButton);
-		add(createButton);
+		buttons.add(setupButton, BorderLayout.WEST);
+		buttons.add(createButton, BorderLayout.EAST);
+		add(buttons, BorderLayout.NORTH);
 	}
 	
 	public void paintComponent(Graphics page)

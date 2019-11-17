@@ -15,7 +15,16 @@ public class GraphVertex {
 	}
 	
 	public void addVertex(int vert) {
-		vertexList.add(vert);
+		boolean found = false;
+		for(int x = 0; x < vertexList.size(); x++) {
+			if(vert == vertexList.get(x)) {
+				found = true;
+				break;
+			}
+		}
+		if(found == false) {
+			vertexList.add(vert);
+		}
 	}
 	
 	public ArrayList<Integer> getVertexList(){
@@ -24,6 +33,10 @@ public class GraphVertex {
 	
 	public int getVertex() {
 		return vertex;
+	}
+	
+	public String toString() {
+		return "Vertex: " + vertex + " VertexList: " + vertexList;
 	}
 	
 }

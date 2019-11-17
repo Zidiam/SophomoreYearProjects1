@@ -4,7 +4,11 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +30,7 @@ public class GraphSetupPanel extends JPanel{
 	private boolean random = false;
 	private boolean fill = false;
 	private Random rand = new Random();
-	
+	private ArrayList<GraphVertex> graphVertexList;
 	public GraphSetupPanel() {
 		setPreferredSize(new Dimension(1350, 625));
     	setLayout(null);
@@ -35,6 +39,7 @@ public class GraphSetupPanel extends JPanel{
     	verticies = 5;
     	rowLabelList = new ArrayList<JLabel>();
 		colLabelList = new ArrayList<JLabel>();
+		graphVertexList = new ArrayList<GraphVertex>();
     	setupComponents();
 
     	this.setBackground(Color.yellow);
@@ -46,36 +51,54 @@ public class GraphSetupPanel extends JPanel{
 	
 	public ArrayList<Point> getpointList(){
 		ArrayList<Point> points = new ArrayList<Point>();
-		
+
 		for(int row = 0; row < radioButtonList.length; row++) {
 			for(int col = 0; col < radioButtonList[row].length; col++) {
 				if(radioButtonList[row][col].isSelected()) {
-					points.add(new Point(row+1, col+1));
+					Point temp = new Point(row+1, col+1);
+					boolean contains = false;
+					Point reverseTemp = new Point(col+1, row+1);
+					for(int scan = 0; scan < points.size(); scan++) {
+						if(points.get(scan).equals(reverseTemp)) {
+							contains = true;
+							break;
+						}
+					}
+					if(contains == false) {
+						points.add(temp);
+					}
+					setupVertexList(temp);
 				}
 			}
 		}
 		
-		ArrayList<Point> fin = new ArrayList<Point>();
-		for(int scan = 0; scan < points.size(); scan++) {
-			if(!fin.contains(new Point(points.get(scan).y, points.get(scan).x))) {
-				fin.add(points.get(scan));
-			}
-			
+		for(int scan = 0; scan < graphVertexList.size(); scan++) {
+			System.out.println(graphVertexList.get(scan));
 		}
 		
-		for(int scan = 0; scan < fin.size(); scan++) {
-			System.out.println(fin.get(scan));
-		}
-		
-		
-		pointList = fin;
-		return fin;
+		pointList = points;
+		return points;
 	}
 	
-	private ArrayList<GraphVertex> convertArray(){
+	private void setupVertexList(Point point) {
+		boolean contains = false;
 		
-		
-		return null;
+		for(int scan = 0; scan < graphVertexList.size(); scan++) {
+			if(graphVertexList.get(scan).getVertex() == point.x) {
+				contains = true;
+				graphVertexList.get(scan).addVertex(point.y);
+				break;
+			}
+		}
+		if(contains == false) {
+			GraphVertex tempV = new GraphVertex(point.x);
+			tempV.addVertex(point.y);
+			graphVertexList.add(tempV);
+		}
+	}
+	
+	public ArrayList<GraphVertex> getGraphVertex(){
+		return graphVertexList;
 	}
 	
 	private void setupComponents() {
