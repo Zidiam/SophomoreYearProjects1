@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"<Unnamed>","c":"AlgebraicSetMain","l":"AlgebraicSetMain()","url":"%3Cinit%3E()"},{"p":"<Unnamed>","c":"AlgebraicSetMain","l":"main(String[])","url":"main(java.lang.String[])"}]
