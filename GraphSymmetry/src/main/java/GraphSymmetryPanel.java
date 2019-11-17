@@ -12,7 +12,7 @@ public class GraphSymmetryPanel extends JPanel{
 	private int speed = 75;
 	private Timer timer;
 	private GraphSetupPanel graphsetupPanel, graphsetupPanel2;
-	private JButton setupButton, createButton;
+	private JButton setupButton, createButton, symmetryButton;
 	private JPanel graphs;
 	public GraphSymmetryPanel() {
 		addKeyListener(new DirectionListener());
@@ -90,19 +90,26 @@ public class GraphSymmetryPanel extends JPanel{
 	
 	public void setupButtons() {
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new BorderLayout());
+		buttons.setLayout(new GridLayout());
 		setupButton = new JButton("Setup");
 		createButton = new JButton("Create");
+		symmetryButton = new JButton("Symmetry");
 		
 		setupButton.addActionListener(new ButtonListener());
 		createButton.addActionListener(new ButtonListener());
+		symmetryButton.addActionListener(new ButtonListener());
 		
 		//setupButton.setBounds(0, 0, 75, 25);
 		//createButton.setBounds(100, 0, 75, 25);
 		buttons.setBackground(Color.green);
-		buttons.add(setupButton, BorderLayout.WEST);
-		buttons.add(createButton, BorderLayout.EAST);
+		buttons.add(setupButton);
+		buttons.add(createButton);
+		buttons.add(symmetryButton);
 		add(buttons, BorderLayout.NORTH);
+	}
+	
+	public void createsymmetryPanel() {
+		
 	}
 	
 	public void paintComponent(Graphics page)
@@ -117,6 +124,9 @@ public class GraphSymmetryPanel extends JPanel{
 			}
 			if(event.getSource() == createButton) {
 				creategraphPanel();
+			}
+			if(event.getSource() == symmetryButton) {
+				createsymmetryPanel();
 			}
 		}
 	}

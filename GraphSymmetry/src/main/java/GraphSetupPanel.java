@@ -202,8 +202,4 @@ public class GraphSetupPanel extends JPanel{
 			}
 		}
 	}
-	
-	
-	
-	
 }
