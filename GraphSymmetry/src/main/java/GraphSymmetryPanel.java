@@ -11,19 +11,18 @@ public class GraphSymmetryPanel extends JPanel{
 	private final int WIDTH = 1250, HEIGHT = 625;
 	private int speed = 75;
 	private Timer timer;
-	private GraphPanel graphPanel;
-	private JScrollPane scrollPane = new JScrollPane();
-	private GraphSetupPanel graphsetupPanel;
+	private GraphSetupPanel graphsetupPanel, graphsetupPanel2;
 	private JButton setupButton, createButton;
-	
+	private JPanel graphs;
 	public GraphSymmetryPanel() {
 		addKeyListener(new DirectionListener());
 		timer = new Timer(speed, new ReboundListener());
 		
 		setLayout(new BorderLayout());
 		
+		graphs = new JPanel();
 		graphsetupPanel = new GraphSetupPanel();
-		graphPanel = new GraphPanel();
+		graphsetupPanel2 = new GraphSetupPanel();
 		setupgraphPanel();
 		setupButtons();
 		//setLayout(null);
@@ -37,19 +36,40 @@ public class GraphSymmetryPanel extends JPanel{
 	}
 	
 	public void setupgraphPanel() {
-		remove(scrollPane);
+		remove(graphs);
+		
+		
+		graphs = new JPanel();
+		graphs.setLayout(new GridLayout());
+		
+		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane2 = new JScrollPane();
 		
 		scrollPane = new JScrollPane(graphsetupPanel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+        scrollPane2 = new JScrollPane(graphsetupPanel2);
+        scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         //scrollPane.setBounds(0, 50, 1350, 625);
     	
-        add(scrollPane, BorderLayout.CENTER);
+        graphs.add(scrollPane);
+        graphs.add(scrollPane2);
+        add(graphs, BorderLayout.CENTER);
         this.updateUI();
 	}
 	
 	public void creategraphPanel() {
-		remove(scrollPane);
+		remove(graphs);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane2 = new JScrollPane();
+		GraphPanel graphPanel = new GraphPanel();
+		GraphPanel graphPanel2 = new GraphPanel();
+		
+		graphs = new JPanel();
+		graphs.setLayout(new GridLayout());
 		
 		graphPanel.setuppointList(graphsetupPanel.getpointList(), graphsetupPanel.getVerticies());
 		scrollPane = new JScrollPane(graphPanel);
@@ -57,7 +77,14 @@ public class GraphSymmetryPanel extends JPanel{
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         //scrollPane.setBounds(0, 50, 1350, 625);
     	
-        add(scrollPane, BorderLayout.CENTER);
+        graphPanel2.setuppointList(graphsetupPanel2.getpointList(), graphsetupPanel2.getVerticies());
+		scrollPane2 = new JScrollPane(graphPanel2);
+        scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+        graphs.add(scrollPane);
+        graphs.add(scrollPane2);
+        add(graphs, BorderLayout.CENTER);
       	this.updateUI();
 	}
 	
@@ -72,7 +99,7 @@ public class GraphSymmetryPanel extends JPanel{
 		
 		//setupButton.setBounds(0, 0, 75, 25);
 		//createButton.setBounds(100, 0, 75, 25);
-		
+		buttons.setBackground(Color.green);
 		buttons.add(setupButton, BorderLayout.WEST);
 		buttons.add(createButton, BorderLayout.EAST);
 		add(buttons, BorderLayout.NORTH);

@@ -1,4 +1,5 @@
- import java.awt.Color;
+ import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -124,6 +125,7 @@ public class GraphSetupPanel extends JPanel{
     	add(randomize);
     	add(fillButton);
     	
+    	random = true;
     	setupradioButtons();
 	}
 	
