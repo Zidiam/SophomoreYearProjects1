@@ -19,6 +19,7 @@ class AlgebraicSetTest {
 	
 	@BeforeEach
 	void initEach() {
+		
 		testSet = new HashSet<Character>();
 		testSet.add('A');
 		testSet.add('B');
