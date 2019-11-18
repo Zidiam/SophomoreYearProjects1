@@ -55,7 +55,7 @@ public class GraphSetupPanel extends JPanel{
 
 		for(int row = 0; row < radioButtonList.length; row++) {
 			for(int col = 0; col < radioButtonList[row].length; col++) {
-				if(radioButtonList[row][col].isSelected()) {
+				if(radioButtonList[row][col].isSelected() && row != col) {
 					Point temp = new Point(row+1, col+1);
 					boolean contains = false;
 					Point reverseTemp = new Point(col+1, row+1);
@@ -73,8 +73,9 @@ public class GraphSetupPanel extends JPanel{
 			}
 		}
 		
-		for(int scan = 0; scan < graphVertexList.size(); scan++) {
-			System.out.println(graphVertexList.get(scan));
+		System.out.println("Points");
+		for(int scan = 0; scan < points.size(); scan++) {
+			System.out.println(points.get(scan));
 		}
 		
 		pointList = points;
@@ -99,6 +100,8 @@ public class GraphSetupPanel extends JPanel{
 	}
 	
 	public ArrayList<GraphVertex> getGraphVertex(){
+		graphVertexList.clear();
+		getpointList();
 		return graphVertexList;
 	}
 	

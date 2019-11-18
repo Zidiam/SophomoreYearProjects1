@@ -111,10 +111,10 @@ public class GraphSymmetryPanel extends JPanel{
 	}
 	
 	public void createsymmetryPanel() {
-		remove(graphs);
 		remove(symmetryTestPanel);
 		
 		symmetryTestPanel = new GraphSymmetryTestPanel(graphsetupPanel.getGraphVertex(), graphsetupPanel2.getGraphVertex());
+		remove(graphs);
 		
 		add(symmetryTestPanel, BorderLayout.CENTER);
 		this.updateUI();

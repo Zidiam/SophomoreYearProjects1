@@ -21,13 +21,13 @@ public class GraphSymmetryTestPanel extends JPanel{
 	}
 	
 	private void setupLabels() {
-		graphA = new JLabel("Graph A: " + listA);
-		graphB = new JLabel("Graph B: " + listB);
+		graphA = new JLabel("Graph A: ");
+		graphB = new JLabel("Graph B: ");
 		verticiesA = new JLabel("Graph A Verticies: " + listA.getammountVerticies());
 		verticiesB = new JLabel("Graph B Verticies: " + listB.getammountVerticies()); 
 		edgesA = new JLabel("Graph A Edges: " + listA.getammountEdges()); 
 		edgesB = new JLabel("Graph B Edges: " + listB.getammountEdges()); 
-		symmetric = new JLabel("Graph A and B are Symmetric " + listA.isSymmetric(listB.getList())); 
+		symmetric = new JLabel("Graph A and B are Symmetric " + listA.isSymmetric(listB)); 
 		
 		add(graphA);
 		add(graphB);
