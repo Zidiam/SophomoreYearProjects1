@@ -73,11 +73,6 @@ public class GraphSetupPanel extends JPanel{
 			}
 		}
 		
-		System.out.println("Points");
-		for(int scan = 0; scan < points.size(); scan++) {
-			System.out.println(points.get(scan));
-		}
-		
 		pointList = points;
 		return points;
 	}

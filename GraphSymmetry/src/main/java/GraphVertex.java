@@ -27,6 +27,10 @@ public class GraphVertex {
 		}
 	}
 	
+	public int getDegree() {
+		return vertexList.size();
+	}
+	
 	public ArrayList<Integer> getVertexList(){
 		return vertexList;
 	}

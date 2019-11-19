@@ -61,9 +61,32 @@ public class SymmetryFinder {
 		else if(!this.getdegreeList().equals(vertList.getdegreeList())) {
 			return false;
 		}
+
+		testSymmetry(vertList);
 		
+		System.out.println("List1:");
+		for(int scan = 0; scan < vertexList.size(); scan++) {
+			System.out.println(vertexList.get(scan));
+		}
+		
+		System.out.println("List2:");
+		for(int scan = 0; scan < vertList.getList().size(); scan++) {
+			System.out.println(vertList.getList().get(scan));
+		}
 		
 		return true;
+	}
+	
+	
+	private void testSymmetry(SymmetryFinder vertList) {
+		ArrayList<GraphVertex> vert = vertList.getList();
+		for(int scan = 0; scan < vertexList.size(); scan++) {
+			for(int scanN = 0; scanN < vert.size(); scanN++) {
+				System.out.println(vertexList.get(scan).getVertex() + " ---> " + vert.get(scanN).getVertex());
+			}
+			
+		}
+		
 	}
 	
 	public String toString() {
