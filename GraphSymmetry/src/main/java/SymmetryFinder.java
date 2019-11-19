@@ -2,6 +2,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
+
+import Isomorphism.src.*;
 
 public class SymmetryFinder {
 	
@@ -61,8 +64,9 @@ public class SymmetryFinder {
 		else if(!this.getdegreeList().equals(vertList.getdegreeList())) {
 			return false;
 		}
-
-		testSymmetry(vertList);
+		else if(testSymmetry(vertList) == false) {
+			return false;
+		}
 		
 		System.out.println("List1:");
 		for(int scan = 0; scan < vertexList.size(); scan++) {
@@ -78,15 +82,72 @@ public class SymmetryFinder {
 	}
 	
 	
-	private void testSymmetry(SymmetryFinder vertList) {
-		ArrayList<GraphVertex> vert = vertList.getList();
+	private boolean testSymmetry(SymmetryFinder vertList) {
+		AbstractGraphIsomorphismChecker<DirectedGraphNode> checker = new TrivialDirectedGraphIsomorphismChecker();
+		Graph<DirectedGraphNode> graph1 = new Graph<>();
+		ArrayList<Point> pointList = new ArrayList<Point>();
+		ArrayList<DirectedGraphNode> nodeList = new ArrayList<DirectedGraphNode>();
 		for(int scan = 0; scan < vertexList.size(); scan++) {
-			for(int scanN = 0; scanN < vert.size(); scanN++) {
-				System.out.println(vertexList.get(scan).getVertex() + " ---> " + vert.get(scanN).getVertex());
-			}
-			
+			DirectedGraphNode temp = new DirectedGraphNode(vertexList.get(scan).getVertex() + "");
+			graph1.addNode(temp);
+			nodeList.add(temp);
 		}
 		
+		for(int scan = 0; scan < vertexList.size(); scan++) {
+			for(int tempScan = 0; tempScan < vertexList.get(scan).getVertexList().size(); tempScan++) {
+				Point tempPoint = new Point(vertexList.get(scan).getVertex(), (vertexList.get(scan).getVertexList().get(tempScan)));
+				Point tempPoint2 = new Point(tempPoint.y, tempPoint.x);
+				if(!pointList.contains(tempPoint) && !pointList.contains(tempPoint2)) {
+					pointList.add(tempPoint);
+					for(int find = 0; find < nodeList.size(); find++) {
+						if(nodeList.get(find).getName().equals(tempPoint.x + "")) {
+							for(int find2 = 0; find2 < nodeList.size(); find2++) {
+								if(nodeList.get(find2).getName().equals(vertexList.get(scan).getVertexList().get(tempScan) + "")) {
+									nodeList.get(find).addChild(nodeList.get(find2));
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
+		
+		Graph<DirectedGraphNode> graph2 = new Graph<>();
+		pointList = new ArrayList<Point>();
+		nodeList = new ArrayList<DirectedGraphNode>();
+		for(int scan = 0; scan < vertList.getList().size(); scan++) {
+			DirectedGraphNode temp = new DirectedGraphNode(vertList.getList().get(scan).getVertex() + "");
+			graph2.addNode(temp);
+			nodeList.add(temp);
+		}
+		
+		for(int scan = 0; scan < vertList.getList().size(); scan++) {
+			for(int tempScan = 0; tempScan < vertList.getList().get(scan).getVertexList().size(); tempScan++) {
+				Point tempPoint = new Point(vertList.getList().get(scan).getVertex(), (vertList.getList().get(scan).getVertexList().get(tempScan)));
+				Point tempPoint2 = new Point(tempPoint.y, tempPoint.x);
+				if(!pointList.contains(tempPoint) && !pointList.contains(tempPoint2)) {
+					pointList.add(tempPoint);
+					for(int find = 0; find < nodeList.size(); find++) {
+						if(nodeList.get(find).getName().equals(tempPoint.x + "")) {
+							for(int find2 = 0; find2 < nodeList.size(); find2++) {
+								if(nodeList.get(find2).getName().equals(vertList.getList().get(scan).getVertexList().get(tempScan) + "")) {
+									nodeList.get(find).addChild(nodeList.get(find2));
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
+		
+		Map<DirectedGraphNode, DirectedGraphNode> isomorphism = checker.getIsomorphism(graph1, graph2);
+		if(isomorphism == null) {
+			return false;
+		}
+		else
+			return Utils.isIsomorphism(isomorphism);
 	}
 	
 	public String toString() {
