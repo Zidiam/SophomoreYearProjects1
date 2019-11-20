@@ -117,8 +117,6 @@ public class SymmetryFinder {
 		
 		
 		VF2GraphIsomorphismInspector<Integer, Integer> graphchecker = new VF2GraphIsomorphismInspector<Integer, Integer>(graph1, graph2);
-	
-		System.out.println(graphchecker.getMappings());
 		
 		Iterator<GraphMapping<Integer, Integer>> integer = graphchecker.getMappings();
 		
@@ -130,7 +128,6 @@ public class SymmetryFinder {
 	}
 	
 	public String getisomorphismString() {
-		System.out.println(isomorphismString);
 		return isomorphismString;
 	}
 	

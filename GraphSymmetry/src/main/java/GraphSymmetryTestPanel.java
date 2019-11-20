@@ -27,7 +27,12 @@ public class GraphSymmetryTestPanel extends JPanel{
 		verticiesB = new JLabel("Graph B Verticies: " + listB.getammountVerticies()); 
 		edgesA = new JLabel("Graph A Edges: " + listA.getammountEdges()); 
 		edgesB = new JLabel("Graph B Edges: " + listB.getammountEdges()); 
-		symmetric = new JLabel("Graph A and B are Symmetric " + listA.isSymmetric(listB)); 
+		boolean cont = listA.isSymmetric(listB);
+		if(cont) {
+			symmetric = new JLabel("Graph A and B are Isomorphic");
+		}
+		else
+			symmetric = new JLabel("Graph A and B are not Isomorphic");
 		symmetricPath = new JLabel("Path: " + listA.getisomorphismString());
 		
 		add(graphA);

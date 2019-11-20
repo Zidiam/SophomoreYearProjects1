@@ -13,6 +13,7 @@ public class GraphSymmetryPanel extends JPanel{
 	private Timer timer;
 	private GraphSetupPanel graphsetupPanel, graphsetupPanel2;
 	private JButton setupButton, createButton, symmetryButton;
+	private JLabel myName;
 	private JPanel graphs;
 	private GraphSymmetryTestPanel symmetryTestPanel;
 	public GraphSymmetryPanel() {
@@ -95,7 +96,8 @@ public class GraphSymmetryPanel extends JPanel{
 		buttons.setLayout(new GridLayout());
 		setupButton = new JButton("Setup");
 		createButton = new JButton("Create");
-		symmetryButton = new JButton("Symmetry");
+		symmetryButton = new JButton("Isomorphism");
+		myName = new JLabel("Created by: Jason Melnik");
 		
 		setupButton.addActionListener(new ButtonListener());
 		createButton.addActionListener(new ButtonListener());
@@ -107,6 +109,7 @@ public class GraphSymmetryPanel extends JPanel{
 		buttons.add(setupButton);
 		buttons.add(createButton);
 		buttons.add(symmetryButton);
+		buttons.add(myName);
 		add(buttons, BorderLayout.NORTH);
 	}
 	
