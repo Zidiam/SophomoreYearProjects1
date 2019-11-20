@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GraphSymmetryTestPanel extends JPanel{
-	JLabel graphA, graphB, verticiesA, verticiesB, edgesA, edgesB, symmetric;
+	JLabel graphA, graphB, verticiesA, verticiesB, edgesA, edgesB, symmetric, symmetricPath;
 	SymmetryFinder listA, listB;
 	ArrayList<GraphVertex> vertexListB;
 	
@@ -28,6 +28,7 @@ public class GraphSymmetryTestPanel extends JPanel{
 		edgesA = new JLabel("Graph A Edges: " + listA.getammountEdges()); 
 		edgesB = new JLabel("Graph B Edges: " + listB.getammountEdges()); 
 		symmetric = new JLabel("Graph A and B are Symmetric " + listA.isSymmetric(listB)); 
+		symmetricPath = new JLabel("Path: " + listA.getisomorphismString());
 		
 		add(graphA);
 		add(graphB);
@@ -36,5 +37,6 @@ public class GraphSymmetryTestPanel extends JPanel{
 		add(edgesA);
 		add(edgesB);
 		add(symmetric);
+		add(symmetricPath);
 	}
 }
