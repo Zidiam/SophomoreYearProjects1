@@ -115,12 +115,8 @@ public class SymmetryFinder {
 			}
 		}
 		
-		
-<<<<<<< HEAD
+
 		VF2GraphIsomorphismInspector<Integer, Integer> graphchecker = new VF2GraphIsomorphismInspector<Integer, Integer>(graph1, graph2);
-=======
-		VF2GraphIsomorphismInspector<Integer, Integer> graphchecker = new VF2GraphIsomorphismInspector<Integer, Integer>(graph1, graph2);;
->>>>>>> branch 'master' of https://github.com/ginzajason/SophomoreYearProjects.git
 		
 		Iterator<GraphMapping<Integer, Integer>> integer = graphchecker.getMappings();
 		
