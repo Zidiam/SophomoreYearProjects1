@@ -61,7 +61,7 @@ public class BarChartPanel extends ChartPanel{
 	    chart.getStyler().setLegendPosition(LegendPosition.OutsideS);
 	    chart.getStyler().setHasAnnotations(true);
 	    
-	    chart.addSeries("a", xData, yData);
+	    chart.addSeries("a", xData, yData);//t
 	    
 		xPanel = new XChartPanel<CategoryChart>(chart);
 		add(xPanel, BorderLayout.CENTER);
