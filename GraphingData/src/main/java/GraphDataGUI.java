@@ -5,7 +5,7 @@ public class GraphDataGUI {
 		JFrame frame = new JFrame("Graph Data");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.getContentPane().add(new GraphDataPanel());
+		frame.getContentPane().add(new GraphingPanel());
 		
 		frame.pack();
 		frame.setVisible(true);

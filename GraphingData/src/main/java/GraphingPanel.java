@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +42,9 @@ public class GraphingPanel extends JPanel{
 	}
 	
 	private void setupComponenet() {
+		this.setPreferredSize(new Dimension(1280, 720));
+		this.setLayout(new BorderLayout());
+		
 		JPanel buttonP = new JPanel();
 		buttonP.setLayout(new GridLayout());
 		
