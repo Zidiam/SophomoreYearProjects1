@@ -1,17 +1,19 @@
 import java.awt.BorderLayout;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
+import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.XYSeries.XYSeriesRenderStyle;
 import org.knowm.xchart.style.Styler.LegendPosition;
 
-public class QuickChartPanel extends ChartPanel{
+public class AreaChartPanel extends ChartPanel{
 	
-	public QuickChartPanel(HashSet<DataObject> dataSet) {
+	public AreaChartPanel(HashSet<DataObject> dataSet) {
 		super(dataSet);
 	}
-
 	
 	protected void graphData() {
 		if(this.xPanel != null) {
@@ -46,14 +48,22 @@ public class QuickChartPanel extends ChartPanel{
 			count ++;
 		}
 		
+		Arrays.parallelSort(xData);
+		Arrays.parallelSort(yData);
+		
 		String x_axis = DataObject.getDataContents().get(chooseX.getSelectedIndex()-1);
 		String y_axis = DataObject.getDataContents().get(chooseY.getSelectedIndex()-1);
 		String title = x_axis + " To " + y_axis;
-		XYChart chart = QuickChart.getChart(title, x_axis, y_axis, "a", xData, yData);
 		
-		chart.getStyler().setLegendVisible(true);
+		XYChart chart = new XYChartBuilder().build();
+		chart.setTitle(title);
+		chart.setXAxisTitle(x_axis);
+		chart.addSeries("a", xData, yData);
+		
+	    chart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Area);
+	    chart.getStyler().setLegendVisible(true);
 	    chart.getStyler().setLegendPosition(LegendPosition.OutsideS);
-	    
+		
 		xPanel = new XChartPanel<XYChart>(chart);
 		add(xPanel, BorderLayout.CENTER);
 		this.updateUI();

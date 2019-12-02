@@ -1,3 +1,11 @@
 /ChartPanel$ButtonListener.class
 /ChartPanel.class
 /QuickChartPanel.class
+/AreaChartPanel.class
+/LineChart.class
+/LineChartPanel.class
+/StickChartPanel.class
+/ScatterChartPanel.class
+/BarChartPanel.class
+/HistogramChartPanel.class
+/ThemeChartPanel.class

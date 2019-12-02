@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,12 +34,35 @@ public class GraphingPanel extends JPanel{
 	private JComboBox<File> fileChooser;
 	private JComboBox<String> graphChooser;
 	private QuickChartPanel quickP;
-	private JLabel errorL;
+	private AreaChartPanel areaP;
+	private LineChartPanel lineP;
+	private StickChartPanel stickP;
+	private ScatterChartPanel scatterP;
+	private BarChartPanel barP;
+	private ThemeChartPanel themeP;
+	private JLabel errorL, versionL, creatorL, notesL;
+	private JPanel labelP;
 	
 	public GraphingPanel() {
 		this.setBackground(Color.green);
 		this.setLayout(new BorderLayout());
 		setupComponenet();
+		setupLabels();
+	}
+	
+	private void setupLabels() {
+		labelP = new JPanel();
+		labelP.setLayout(new GridLayout());
+		
+		versionL = new JLabel("Version 1.1.1");
+		creatorL = new JLabel("Made by Jason Melnik");
+		notesL = new JLabel("Next Update: Adding more than one x and y / maybe adding a search bar");
+		
+		labelP.add(versionL);
+		labelP.add(creatorL);
+		labelP.add(notesL);
+		
+		add(labelP, BorderLayout.CENTER);
 	}
 	
 	private void setupComponenet() {
@@ -63,6 +87,12 @@ public class GraphingPanel extends JPanel{
 		
 		graphChooser.addItem("Choose Graph:");
 		graphChooser.addItem("QuickChart");
+		graphChooser.addItem("AreaChart");
+		graphChooser.addItem("LineChart");
+		graphChooser.addItem("StickChart");
+		graphChooser.addItem("ScatterChart");
+		graphChooser.addItem("BarChart");
+		graphChooser.addItem("ThemeChart");
 		
 		errorL.setForeground(Color.red);
 		errorL.setVisible(false);
@@ -111,6 +141,24 @@ public class GraphingPanel extends JPanel{
 		if(graphType.equals("QuickChart")) {
 			loadQuickChart();
 		}
+		if(graphType.equals("AreaChart")) {
+			loadAreaChart();
+		}
+		if(graphType.equals("LineChart")) {
+			loadLineChart();
+		}
+		if(graphType.equals("StickChart")) {
+			loadStickChart();
+		}
+		if(graphType.equals("ScatterChart")) {
+			loadScatterChart();
+		}
+		if(graphType.equals("BarChart")) {
+			loadBarChart();
+		}
+		if(graphType.equals("ThemeChart")) {
+			loadThemeChart();
+		}
 	}
 	
 	private void loadQuickChart() {
@@ -119,7 +167,44 @@ public class GraphingPanel extends JPanel{
 		this.updateUI();
 	}
 	
+	private void loadAreaChart() {
+		areaP = new AreaChartPanel(dataSet);
+		add(areaP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
+	private void loadLineChart() {
+		lineP = new LineChartPanel(dataSet);
+		add(lineP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
+	private void loadStickChart() {
+		stickP = new StickChartPanel(dataSet);
+		add(stickP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
+	private void loadScatterChart() {
+		scatterP = new ScatterChartPanel(dataSet);
+		add(scatterP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
+	private void loadBarChart() {
+		barP = new BarChartPanel(dataSet);
+		add(barP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
+	private void loadThemeChart() {
+		themeP = new ThemeChartPanel(dataSet);
+		add(themeP, BorderLayout.CENTER);
+		this.updateUI();
+	}
+	
 	private void removeGraphs() {
+		remove(labelP);
 		DataObject.setDataContents(new ArrayList<String>());
 		if(quickP != null) {
 			remove(quickP);
