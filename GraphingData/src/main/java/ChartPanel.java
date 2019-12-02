@@ -90,12 +90,12 @@ public class ChartPanel extends JPanel{
 					errorL.setVisible(true);
 				}
 				else {
-					try {
+					//try {
 						errorL.setVisible(false);
 						graphData();
-					}catch(Exception e){
-						errorL.setVisible(true);
-					}
+					//}catch(Exception e){
+					//	errorL.setVisible(true);
+					//}
 				}
 			}
 		}
