@@ -209,6 +209,24 @@ public class GraphingPanel extends JPanel{
 		if(quickP != null) {
 			remove(quickP);
 		}
+		if(areaP != null) {
+			remove(areaP);
+		}
+		if(lineP != null) {
+			remove(lineP);
+		}
+		if(stickP != null) {
+			remove(stickP);
+		}
+		if(scatterP != null) {
+			remove(scatterP);
+		}
+		if(barP != null) {
+			remove(barP);
+		}
+		if(themeP != null) {
+			remove(themeP);
+		}
 	}
 	
 	private void showFile(File data) {
