@@ -54,9 +54,9 @@ public class GraphingPanel extends JPanel{
 		labelP = new JPanel();
 		labelP.setLayout(new GridLayout());
 		
-		versionL = new JLabel("Version 1.1.1");
+		versionL = new JLabel("Version 1.1.2");
 		creatorL = new JLabel("Made by Jason Melnik");
-		notesL = new JLabel("Next Update: Adding more than one x and y / maybe adding a search bar");
+		notesL = new JLabel("Next Update: making buttons work");
 		
 		labelP.add(versionL);
 		labelP.add(creatorL);

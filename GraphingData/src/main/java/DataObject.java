@@ -5,11 +5,29 @@ public class DataObject {
 	
 	private static ArrayList<String> dataContents = new ArrayList<String>();
 	private ArrayList<String> dataList = new ArrayList<String>();
-	
+	private DataObject object2;
+	private String data;
 	
 	public DataObject() {}
 	public DataObject(String data) {
+		this.data = data;
 		setupData(data);
+	}
+	
+	public DataObject(DataObject object) {
+		setupData(object.getData());
+	}
+	
+	public String getData() {
+		return data;
+	}
+	
+	public void addObject(DataObject object) {
+		object2 = object;
+	}
+	
+	public DataObject getObject2() {
+		return object2;
 	}
 	
 	public static void setDataContents(ArrayList<String> dataContent){
@@ -53,7 +71,12 @@ public class DataObject {
 		for(int scan = 0; scan < dataList.length; scan++) {
 			result += dataList[scan] + ", ";
 		}
-		return result.substring(0, result.length()-2);
+		
+		if(object2 == null) {
+			return result.substring(0, result.length()-2);
+		}
+		else
+			return result.substring(0, result.length()-2) + object2;
 	}
 	
 	public int HashCode() {
