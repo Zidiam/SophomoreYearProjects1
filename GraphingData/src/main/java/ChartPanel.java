@@ -155,6 +155,42 @@ public class ChartPanel extends JPanel{
 		this.updateUI();
 	}
 	
+	protected void removeData() {
+		combinedObjectsBox.removeItemAt((combinedObjectsBox.getSelectedIndex()));
+	}
+	
+	protected boolean containsIgnoreCase(String str, String searchStr)     {
+	    if(str == null || searchStr == null) return false;
+
+	    final int length = searchStr.length();
+	    if (length == 0)
+	        return true;
+
+	    for (int i = str.length() - length; i >= 0; i--) {
+	        if (str.regionMatches(true, i, searchStr, 0, length))
+	            return true;
+	    }
+	    return false;
+	}
+	
+	protected void editChooseX() {
+		chooseObjectX.removeAllItems();
+		for(DataObject data : dataSet) {
+			if(containsIgnoreCase(data.getDataList().get(chooseSearchX.getSelectedIndex()-1), searchDataX.getText())){
+				chooseObjectX.addItem(data);
+			}
+		}
+	}
+	
+	protected void editChooseY() {
+		chooseObjectY.removeAllItems();
+		for(DataObject data : dataSet) {
+			if(containsIgnoreCase(data.getDataList().get(chooseSearchY.getSelectedIndex()-1), searchDataY.getText())){
+				chooseObjectY.addItem(data);
+			}
+		}
+	}
+	
 	protected class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource() == editB) {
@@ -164,8 +200,20 @@ public class ChartPanel extends JPanel{
 				updateScreen();
 			}
 			
-			if(event.getSource() == addB) {
+			if(event.getSource() == addB && chooseObjectX.getSelectedIndex() != 0 && chooseObjectY.getSelectedIndex() != 0) {
 				addData();
+			}
+			
+			if(event.getSource() == removeB && combinedObjectsBox.getSelectedIndex() != 0) {
+				removeData();
+			}
+			
+			if(event.getSource() == searchXB && chooseSearchX.getSelectedIndex() != 0) {
+				editChooseX();
+			}
+			
+			if(event.getSource() == searchYB && chooseSearchY.getSelectedIndex() != 0) {
+				editChooseY();
 			}
 			
 			if(event.getSource() == graphB) {
