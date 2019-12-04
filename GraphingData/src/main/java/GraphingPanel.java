@@ -44,7 +44,7 @@ public class GraphingPanel extends JPanel{
 	private JPanel labelP;
 	
 	public GraphingPanel() {
-		this.setBackground(Color.green);
+		this.setBackground(Color.LIGHT_GRAY);
 		this.setLayout(new BorderLayout());
 		setupComponenet();
 		setupLabels();
@@ -52,11 +52,14 @@ public class GraphingPanel extends JPanel{
 	
 	private void setupLabels() {
 		labelP = new JPanel();
+		
+		labelP.setBackground(Color.LIGHT_GRAY);
+		
 		labelP.setLayout(new GridLayout());
 		
-		versionL = new JLabel("Version 1.1.2");
+		versionL = new JLabel("Version 1.2.1");
 		creatorL = new JLabel("Made by Jason Melnik");
-		notesL = new JLabel("Next Update: making buttons work");
+		notesL = new JLabel("Next Update: fixing the other graphs");
 		
 		labelP.add(versionL);
 		labelP.add(creatorL);
@@ -71,12 +74,19 @@ public class GraphingPanel extends JPanel{
 		
 		JPanel buttonP = new JPanel();
 		buttonP.setLayout(new GridLayout());
+		buttonP.setBackground(Color.LIGHT_GRAY);
 		
 		fileChooser = new JComboBox<File>();
 		graphChooser = new JComboBox<String>();
 		setupB = new JButton("SetUp");
 		addFileB = new JButton("Add File");
 		errorL = new JLabel("Please select a file and graph");
+		
+		addFileB.setBackground(Color.green);
+		setupB.setBackground(Color.green);
+		fileChooser.setBackground(Color.yellow);
+		graphChooser.setBackground(Color.yellow);
+		errorL.setBackground(Color.LIGHT_GRAY);
 		
 		graphChooser.addActionListener(new ButtonListener());
 		fileChooser.addActionListener(new ButtonListener());

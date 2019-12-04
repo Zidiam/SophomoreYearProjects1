@@ -75,8 +75,19 @@ public class DataObject {
 		if(object2 == null) {
 			return result.substring(0, result.length()-2);
 		}
-		else
-			return result.substring(0, result.length()-2) + object2;
+		else {
+			if(result.length() >= 20 && object2.toString().length() >= 20) {
+				return result.substring(0, 20) + "... to " + object2.toString().substring(0, 20) + "...";
+			}
+			else if(result.length() >= 20 && object2.toString().length() <= 20) {
+				return result.substring(0, 20) + "... to " + object2.toString() + "...";
+			}
+			else
+				return result + "... to " + object2.toString() + "...";
+			
+		}
+		
+		
 	}
 	
 	public int HashCode() {

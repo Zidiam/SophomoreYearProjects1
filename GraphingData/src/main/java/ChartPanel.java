@@ -30,12 +30,15 @@ public class ChartPanel extends JPanel{
 		this.dataSet = dataSet;
 		this.setLayout(new BorderLayout());
 		
+		this.setBackground(Color.LIGHT_GRAY);
+		
 		setupButtons();
 	}
 	
 	protected void setupButtons() {
 		buttonP = new JPanel();
 		buttonP.setLayout(new GridLayout(7, 3));
+		buttonP.setBackground(Color.LIGHT_GRAY);
 		
 		chooseX = new JComboBox<String>();
 		chooseY = new JComboBox<String>();
@@ -87,15 +90,34 @@ public class ChartPanel extends JPanel{
 		removeB.addActionListener(new ButtonListener());
 		searchXB.addActionListener(new ButtonListener());
 		searchYB.addActionListener(new ButtonListener());
-		chooseX.addActionListener(new ButtonListener());
-		chooseY.addActionListener(new ButtonListener());
-		chooseObjectX.addActionListener(new ButtonListener());
-		chooseObjectY.addActionListener(new ButtonListener());
-		combinedObjectsBox.addActionListener(new ButtonListener());
-		chooseSearchX.addActionListener(new ButtonListener());
-		chooseSearchY.addActionListener(new ButtonListener());
 		applyXB.addActionListener(new ButtonListener());
 		applyYB.addActionListener(new ButtonListener());
+		
+		searchXB.setBackground(Color.green);
+		searchYB.setBackground(Color.green);
+		addB.setBackground(Color.green);
+		removeB.setBackground(Color.green);
+		graphB.setBackground(Color.green);
+		applyXB.setBackground(Color.green);
+		applyYB.setBackground(Color.green);
+		editB.setBackground(Color.green);
+		
+		chooseSearchX.setBackground(Color.yellow);
+		chooseSearchY.setBackground(Color.yellow);
+		chooseX.setBackground(Color.yellow);
+		chooseY.setBackground(Color.yellow);
+		combinedObjectsBox.setBackground(Color.yellow);
+		chooseObjectX.setBackground(Color.yellow);
+		chooseObjectY.setBackground(Color.yellow);
+		
+		searchDataX.setBackground(Color.cyan);
+		searchDataY.setBackground(Color.cyan);
+		rangeforX1.setBackground(Color.cyan);
+		rangeforX2.setBackground(Color.cyan);
+		rangeforY1.setBackground(Color.cyan);
+		rangeforY2.setBackground(Color.cyan);
+		
+		errorL.setBackground(Color.black);
 		
 		buttonP.add(chooseSearchX);
 		buttonP.add(searchDataX);
@@ -151,6 +173,14 @@ public class ChartPanel extends JPanel{
 		this.updateUI();
 	}
 	
+	protected void hideButtons() {
+		editB.setVisible(true);
+		buttonP.setVisible(false);
+		add(editB, BorderLayout.NORTH);
+	
+		errorL.setVisible(false);
+	}
+	
 	protected void updateScreen() {
 		this.updateUI();
 	}
@@ -200,7 +230,29 @@ public class ChartPanel extends JPanel{
 				updateScreen();
 			}
 			
-			if(event.getSource() == addB && chooseObjectX.getSelectedIndex() != 0 && chooseObjectY.getSelectedIndex() != 0) {
+			if(event.getSource() == applyXB) {
+				try {
+					errorL.setVisible(false);
+					graphData();
+					hideButtons();
+				}catch(Exception e) {
+					errorL.setVisible(true);
+					errorL.setText("Invalid range for X1 to X2 (Try clearing the ranges)");
+				}
+			}
+			
+			if(event.getSource() == applyYB) {
+				try {
+					errorL.setVisible(false);
+					graphData();
+					hideButtons();
+				}catch(Exception e) {
+					errorL.setVisible(true);
+					errorL.setText("Invalid range for Y1 to Y2 (Try clearing the ranges)");
+				}
+			}
+			
+			if(event.getSource() == addB && !chooseObjectX.getSelectedItem().toString().contains("Choose X Data:") && !chooseObjectY.getSelectedItem().toString().contains("Choose Y Data:")) {
 				addData();
 			}
 			
@@ -209,11 +261,23 @@ public class ChartPanel extends JPanel{
 			}
 			
 			if(event.getSource() == searchXB && chooseSearchX.getSelectedIndex() != 0) {
-				editChooseX();
+				try {
+					errorL.setVisible(false);
+					editChooseX();
+				}catch(Exception e) {
+					errorL.setVisible(true);
+					errorL.setText("Invalid search for X");
+				}
 			}
 			
 			if(event.getSource() == searchYB && chooseSearchY.getSelectedIndex() != 0) {
-				editChooseY();
+				try {
+					errorL.setVisible(false);
+					editChooseY();
+				}catch(Exception e) {
+					errorL.setVisible(true);
+					errorL.setText("Invalid search for Y");
+				}
 			}
 			
 			if(event.getSource() == graphB) {
@@ -222,16 +286,13 @@ public class ChartPanel extends JPanel{
 					errorL.setVisible(true);
 				}
 				else {
-					//try {
-						editB.setVisible(true);
-						buttonP.setVisible(false);
-						add(editB, BorderLayout.NORTH);
-					
-						errorL.setVisible(false);
+					try {
 						graphData();
-					//}catch(Exception e){
-					//	errorL.setVisible(true);
-					//}
+						hideButtons();
+					}catch(Exception e){
+						errorL.setText("Invalid inputs to create graph");
+						errorL.setVisible(true);
+					}
 				}
 			}
 		}
