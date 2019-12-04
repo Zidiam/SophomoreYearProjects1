@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
+import org.knowm.xchart.style.Styler.LegendPosition;
 
 public class ChartPanel extends JPanel{
 	protected HashSet<DataObject> dataSet;
@@ -25,6 +27,10 @@ public class ChartPanel extends JPanel{
 	protected XChartPanel<XYChart> xPanel;
 	protected JLabel errorL;
 	protected JPanel buttonP;
+	protected double[] xData = new double[2];
+	protected double[] yData = new double[2];
+	protected XYChart chart = null;
+	protected int titleInt = 0;
 	
 	public ChartPanel(HashSet<DataObject> dataSet) {
 		this.dataSet = dataSet;
@@ -169,10 +175,6 @@ public class ChartPanel extends JPanel{
 		combinedObjectsBox.addItem(newObject);
 	}
 	
-	protected void graphData() {
-		this.updateUI();
-	}
-	
 	protected void hideButtons() {
 		editB.setVisible(true);
 		buttonP.setVisible(false);
@@ -282,20 +284,165 @@ public class ChartPanel extends JPanel{
 			
 			if(event.getSource() == graphB) {
 				
-				if(chooseX.getSelectedIndex() == 0 || chooseY.getSelectedIndex() == 0 || chooseObjectX.getSelectedIndex() == 0 || chooseObjectY.getSelectedIndex() == 0) {
+				if(chooseX.getSelectedIndex() == 0 || chooseY.getSelectedIndex() == 0 || combinedObjectsBox.getItemCount() < 1) {
 					errorL.setVisible(true);
 				}
 				else {
-					try {
+					//try {
 						graphData();
 						hideButtons();
-					}catch(Exception e){
+					//}catch(Exception e){
 						errorL.setText("Invalid inputs to create graph");
 						errorL.setVisible(true);
-					}
+					//}
 				}
 			}
 		}
+	}
+	
+	protected boolean rangeCheckDataY(DataObject data) {
+		if(rangeforY1.getText().equals("") || rangeforY2.getText().equals("")) {
+			return true;
+		}
+		if(rangeforY1.getText().equals("Range1Y") || rangeforY2.getText().equals("Range2Y")) {
+			return true;
+		}
+		double checkD = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
+		double checkY1 = Double.parseDouble(rangeforY1.getText());
+		double checkY2 = Double.parseDouble(rangeforY2.getText());
+		if(checkY1 < checkD && checkD < checkY2) {
+			return true;
+		}
+		else 
+			return false;
+	}
+	
+	protected boolean rangeCheckDataX(DataObject data) {
+		if(rangeforX1.getText().equals("") || rangeforX2.getText().equals("")) {
+			return true;
+		}
+		if(rangeforX1.getText().equals("Range1X") || rangeforX2.getText().equals("Range2X")) {
+			return true;
+		}
+		double checkD = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
+		double checkX1 = Double.parseDouble(rangeforX1.getText());
+		double checkX2 = Double.parseDouble(rangeforX2.getText());
+		if(checkX1 < checkD && checkD < checkX2) {
+			return true;
+		}
+		else 
+			return false;
+	}
+	
+	protected void compareAllData(DataObject data) {
+		int count2 = 0;
+		for(DataObject scanData : dataSet) {
+			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
+				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
+				System.out.println(count2);
+				if (count2 != 0 && (count2 % 2) == 0){
+					Arrays.parallelSort(xData);
+					Arrays.parallelSort(yData);
+					chart.addSeries("Data: " + titleInt, xData, yData);
+					xData = new double[2];
+					yData = new double[2];
+					titleInt++;
+				}
+				
+				count2 ++;
+			}
+		}
+	}
+	
+	protected void compareAllDataToData(DataObject data) {
+		int count2 = 0;
+		for(DataObject scanData : dataSet) {
+			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
+				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
+				
+				xData[count2%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseX.getSelectedIndex()-1));
+				yData[count2%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseY.getSelectedIndex()-1));
+				
+				chart.addSeries("Data: " + titleInt, xData, yData);
+				xData = new double[2];
+				yData = new double[2];
+				titleInt++;
+				
+				count2 += 2;
+			}
+		}
+	}
+	
+	protected void compareDataToAllData(DataObject data) {
+		int count2 = 0;
+		for(DataObject scanData : dataSet) {
+			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+				xData[count2%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
+				yData[count2%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
+				
+				xData[count2%2+1] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
+				yData[count2%2+1] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
+				
+
+				chart.addSeries("Data: " + titleInt, xData, yData);
+				xData = new double[2];
+				yData = new double[2];
+				titleInt++;
+				
+				count2 += 2;
+			}
+		}
+	}
+	
+	protected void graphData() {
+		if(this.xPanel != null) {
+			remove(xPanel);
+		}
+		
+		xData = new double[2];
+		yData = new double[2];
+		titleInt = 0;
+		
+		HashSet<DataObject> compareDataSet = new HashSet<DataObject>();
+		
+		for(int scan = 1; scan < combinedObjectsBox.getItemCount(); scan++) {
+			compareDataSet.add((DataObject) combinedObjectsBox.getItemAt(scan));
+		}
+	
+		int count = 0;
+		for(DataObject data : compareDataSet) {
+			if(data.toString().substring(0, 8).contains("All Data") && data.getObject2().toString().substring(0, 8).contains("All Data")) {
+				compareAllData(data);
+			}
+			else if(data.toString().substring(0, 8).contains("All Data")) {
+				compareAllDataToData(data);
+			}
+			else if(data.getObject2().toString().substring(0, 8).contains("All Data")) {
+				compareDataToAllData(data);
+			}
+			else {
+				if(rangeCheckDataY(data) || rangeCheckDataX(data) && (rangeCheckDataY(data.getObject2()) || rangeCheckDataX(data.getObject2()))) {
+					xData[count%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
+					yData[count%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
+					
+					xData[count%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseX.getSelectedIndex()-1));
+					yData[count%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseY.getSelectedIndex()-1));
+					
+					chart.addSeries("Data: " + titleInt, xData, yData);
+					xData = new double[2];
+					yData = new double[2];
+					titleInt++;
+					
+					count += 2;
+				}
+			}
+		}
+	    
+		xPanel = new XChartPanel<XYChart>(chart);
+		add(xPanel, BorderLayout.CENTER);
+		this.updateUI();
 	}
 	
 }

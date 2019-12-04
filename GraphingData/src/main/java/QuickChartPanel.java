@@ -7,49 +7,12 @@ import org.knowm.xchart.XYChart;
 import org.knowm.xchart.style.Styler.LegendPosition;
 
 public class QuickChartPanel extends ChartPanel{
-	private double[] xData = new double[2];
-	private double[] yData = new double[2];
 	private XYChart chart = null;
-	private int titleInt = 0;
 	public QuickChartPanel(HashSet<DataObject> dataSet) {
 		super(dataSet);
 	}
 	
-	private boolean rangeCheckDataY(DataObject data) {
-		if(rangeforY1.getText().equals("") || rangeforY2.getText().equals("")) {
-			return true;
-		}
-		if(rangeforY1.getText().equals("Range1Y") || rangeforY2.getText().equals("Range2Y")) {
-			return true;
-		}
-		double checkD = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
-		double checkY1 = Double.parseDouble(rangeforY1.getText());
-		double checkY2 = Double.parseDouble(rangeforY2.getText());
-		if(checkY1 < checkD && checkD < checkY2) {
-			return true;
-		}
-		else 
-			return false;
-	}
-	
-	private boolean rangeCheckDataX(DataObject data) {
-		if(rangeforX1.getText().equals("") || rangeforX2.getText().equals("")) {
-			return true;
-		}
-		if(rangeforX1.getText().equals("Range1X") || rangeforX2.getText().equals("Range2X")) {
-			return true;
-		}
-		double checkD = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
-		double checkX1 = Double.parseDouble(rangeforX1.getText());
-		double checkX2 = Double.parseDouble(rangeforX2.getText());
-		if(checkX1 < checkD && checkD < checkX2) {
-			return true;
-		}
-		else 
-			return false;
-	}
-	
-	private void compareAllData(DataObject data) {
+	protected void compareAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
 			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
@@ -77,7 +40,7 @@ public class QuickChartPanel extends ChartPanel{
 		}
 	}
 	
-	private void compareAllDataToData(DataObject data) {
+	protected void compareAllDataToData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
 			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
@@ -108,7 +71,7 @@ public class QuickChartPanel extends ChartPanel{
 		}
 	}
 	
-	private void compareDataToAllData(DataObject data) {
+	protected void compareDataToAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
 			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
