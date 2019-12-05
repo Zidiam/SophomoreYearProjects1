@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.JButton;
@@ -13,14 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries.XYSeriesRenderStyle;
 import org.knowm.xchart.style.Styler;
-import org.knowm.xchart.style.Styler.LegendPosition;
 
+/*
+ * ChartPanel -- A panel that creates the buttons for the user to use and creates the graph for the user to see
+ * By: Jason Melnik
+ * Date: 12/1/2019
+ */
 public class ChartPanel extends JPanel{
 	protected HashSet<DataObject> dataSet;
 	protected JComboBox<String> chooseX, chooseY, chooseSearchX, chooseSearchY;
@@ -36,6 +36,10 @@ public class ChartPanel extends JPanel{
 	protected int titleInt = 0;
 	protected Styler styler;
 	
+	/**
+	 * This takes in a dataSet to that we can use that data to graph onto a area chart to make it more visual
+	 * @param dataSet is a set of DataObjects so that we can graph the data
+	 */
 	public ChartPanel(HashSet<DataObject> dataSet) {
 		this.dataSet = dataSet;
 		this.setLayout(new BorderLayout());
@@ -46,10 +50,18 @@ public class ChartPanel extends JPanel{
 		createChart();
 	}
 	
+	/**
+	 * Used to build a chart specific for area charts
+	 */
 	protected void createChart() {
 		//type of chart you want
 	}
 	
+	/**
+	 * This creates all the buttons and the button panel that contains all the buttons
+	 * This method also colors the buttons and sets them in the correct location
+	 * This method then adds the button panel to the classes Panel
+	 */
 	protected void setupButtons() {
 		buttonP = new JPanel();
 		buttonP.setLayout(new GridLayout(7, 3));
@@ -161,6 +173,10 @@ public class ChartPanel extends JPanel{
 		add(editB, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * This sets up whats inside the JComboBox which would be the choices that the user can choose
+	 * This will add items in the JComboBox such as the data or the type of data
+	 */
 	protected void setupBoxContents() {
 		ArrayList<String> dataContents = DataObject.getDataContents();
 		
@@ -178,12 +194,18 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to your JComboBox called combinedObjectsBox which is a combination of two objects
+	 */
 	protected void addData() {
 		DataObject newObject = new DataObject((DataObject) chooseObjectX.getSelectedItem());
 		newObject.addObject(new DataObject((DataObject) chooseObjectY.getSelectedItem()));
 		combinedObjectsBox.addItem(newObject);
 	}
 	
+	/**
+	 * This method is used to hide the big panel filled with buttons and just show one button that says edit
+	 */
 	protected void hideButtons() {
 		editB.setVisible(true);
 		buttonP.setVisible(false);
@@ -192,14 +214,27 @@ public class ChartPanel extends JPanel{
 		errorL.setVisible(false);
 	}
 	
+	/**
+	 * This method just updates the jpanel
+	 */
 	protected void updateScreen() {
 		this.updateUI();
 	}
 	
+	/**
+	 * This method removes the data from the combinedObjectsBox which is the JComboBox 
+	 * that contains the objects that will be used to be compared
+	 */
 	protected void removeData() {
 		combinedObjectsBox.removeItemAt((combinedObjectsBox.getSelectedIndex()));
 	}
 	
+	/**
+	 * This method checks if a string contains certain characters ignoring case
+	 * @param str = this is the String we will check if its in the main string
+	 * @param searchStr = this is the main String in which will be used to see if a str is contained in it
+	 * @return this will return true if str is inside seachStr and false otherwise
+	 */
 	protected boolean containsIgnoreCase(String str, String searchStr)     {
 	    if(str == null || searchStr == null) return false;
 
@@ -214,6 +249,9 @@ public class ChartPanel extends JPanel{
 	    return false;
 	}
 	
+	/**
+	 * This is to edit chooseObjectX and only have it contain what the people want to search for in search X
+	 */
 	protected void editChooseX() {
 		chooseObjectX.removeAllItems();
 		for(DataObject data : dataSet) {
@@ -223,6 +261,9 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This is to edit chooseObjectY and only have it contain what the people want to search for in search Y
+	 */
 	protected void editChooseY() {
 		chooseObjectY.removeAllItems();
 		for(DataObject data : dataSet) {
@@ -232,6 +273,9 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This class will be used to hear action events that are caused in the buttons and do things to the graph
+	 */
 	protected class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource() == editB) {
@@ -312,6 +356,11 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method filters out the graph so that only things in the Y range are shown on the graph
+	 * @param data this takes in data to compare if weather or not the data object is within the bounds of the range of Y
+	 * @return this returns true if data is in the range and false if not
+	 */
 	protected boolean rangeCheckDataY(DataObject data) {
 		if(rangeforY1.getText().equals("") || rangeforY2.getText().equals("")) {
 			return true;
@@ -329,6 +378,11 @@ public class ChartPanel extends JPanel{
 			return false;
 	}
 	
+	/**
+	 * This method filters out the graph so that only things in the X range are shown on the graph
+	 * @param data this takes in data to compare if weather or not the data object is within the bounds of the range of X
+	 * @return this returns true if data is in the range and false if not
+	 */
 	protected boolean rangeCheckDataX(DataObject data) {
 		if(rangeforX1.getText().equals("") || rangeforX2.getText().equals("")) {
 			return true;
@@ -346,10 +400,14 @@ public class ChartPanel extends JPanel{
 			return false;
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
 	protected void compareAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+			if(rangeCheckDataY(scanData) && rangeCheckDataX(scanData)) {
 				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
 				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
 				if (count2 != 0 && (count2 % 2) == 0){
@@ -364,10 +422,14 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
 	protected void compareAllDataToData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+			if(rangeCheckDataY(scanData) && rangeCheckDataX(scanData)) {
 				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
 				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
 				
@@ -384,10 +446,14 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
 	protected void compareDataToAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
+			if(rangeCheckDataY(scanData) && rangeCheckDataX(scanData)) {
 				xData[count2%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
 				yData[count2%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
 				
@@ -405,6 +471,9 @@ public class ChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method builds the graph full of data and then inputs in into the panel
+	 */
 	protected void graphData() {
 		if(this.xPanel != null) {
 			remove(xPanel);
@@ -432,7 +501,7 @@ public class ChartPanel extends JPanel{
 				compareDataToAllData(data);
 			}
 			else {
-				if(rangeCheckDataY(data) || rangeCheckDataX(data) && (rangeCheckDataY(data.getObject2()) || rangeCheckDataX(data.getObject2()))) {
+				if(rangeCheckDataY(data) && rangeCheckDataX(data) && (rangeCheckDataY(data.getObject2()) && rangeCheckDataX(data.getObject2()))) {
 					xData[count%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
 					yData[count%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
 					
