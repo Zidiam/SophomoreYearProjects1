@@ -90,7 +90,13 @@ public class DataObject {
 		
 	}
 	
-	public int HashCode() {
-		return Integer.parseInt(dataList.get(0));
+	public int hashCode() {
+		int result = 1;
+		for(int scan = 0; scan < dataString.length(); scan++) {
+			if(dataString.charAt(scan) != 0) {
+				result += dataString.charAt(scan);
+			}
+		}
+		return result;
 	}
 }
