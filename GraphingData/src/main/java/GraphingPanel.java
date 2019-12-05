@@ -39,7 +39,7 @@ public class GraphingPanel extends JPanel{
 	private StickChartPanel stickP;
 	private ScatterChartPanel scatterP;
 	private BarChartPanel barP;
-	private ThemeChartPanel themeP;
+	private PieChartPanel themeP;
 	private JLabel errorL, versionL, creatorL, notesL;
 	private JPanel labelP;
 	
@@ -57,9 +57,9 @@ public class GraphingPanel extends JPanel{
 		
 		labelP.setLayout(new GridLayout());
 		
-		versionL = new JLabel("Version 1.2.1");
+		versionL = new JLabel("Version 1.2.2");
 		creatorL = new JLabel("Made by Jason Melnik");
-		notesL = new JLabel("Next Update: fixing the other graphs");
+		notesL = new JLabel("Next Update: fixing the code so it looks cleaner");
 		
 		labelP.add(versionL);
 		labelP.add(creatorL);
@@ -102,7 +102,7 @@ public class GraphingPanel extends JPanel{
 		graphChooser.addItem("StickChart");
 		graphChooser.addItem("ScatterChart");
 		graphChooser.addItem("BarChart");
-		graphChooser.addItem("ThemeChart");
+		graphChooser.addItem("PieChart");
 		
 		errorL.setForeground(Color.red);
 		errorL.setVisible(false);
@@ -166,7 +166,7 @@ public class GraphingPanel extends JPanel{
 		if(graphType.equals("BarChart")) {
 			loadBarChart();
 		}
-		if(graphType.equals("ThemeChart")) {
+		if(graphType.equals("PieChart")) {
 			loadThemeChart();
 		}
 	}
@@ -208,7 +208,7 @@ public class GraphingPanel extends JPanel{
 	}
 	
 	private void loadThemeChart() {
-		themeP = new ThemeChartPanel(dataSet);
+		themeP = new PieChartPanel(dataSet);
 		add(themeP, BorderLayout.CENTER);
 		this.updateUI();
 	}

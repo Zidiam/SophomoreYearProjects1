@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.swing.JButton;
@@ -13,15 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.knowm.xchart.QuickChart;
+import org.knowm.xchart.CategoryChart;
+import org.knowm.xchart.CategoryChartBuilder;
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries.XYSeriesRenderStyle;
+import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.Styler.LegendPosition;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
-public class ChartPanel extends JPanel{
+public class PieChartPanel extends JPanel{
 	protected HashSet<DataObject> dataSet;
 	protected JComboBox<String> chooseX, chooseY, chooseSearchX, chooseSearchY;
 	protected JComboBox<DataObject> chooseObjectX, chooseObjectY, combinedObjectsBox;
@@ -32,11 +35,11 @@ public class ChartPanel extends JPanel{
 	protected JPanel buttonP;
 	protected double[] xData = new double[2];
 	protected double[] yData = new double[2];
-	protected XYChart chart;
+	protected PieChart chart;
 	protected int titleInt = 0;
 	protected Styler styler;
 	
-	public ChartPanel(HashSet<DataObject> dataSet) {
+	public PieChartPanel(HashSet<DataObject> dataSet) {
 		this.dataSet = dataSet;
 		this.setLayout(new BorderLayout());
 		
@@ -47,7 +50,10 @@ public class ChartPanel extends JPanel{
 	}
 	
 	protected void createChart() {
-		//type of chart you want
+		chart = new PieChartBuilder().build();
+	    chart.getStyler().setLegendVisible(true);
+	    chart.getStyler().setLegendPosition(LegendPosition.OutsideE);
+	    chart.getStyler().setHasAnnotations(true);
 	}
 	
 	protected void setupButtons() {
@@ -137,24 +143,20 @@ public class ChartPanel extends JPanel{
 		buttonP.add(chooseSearchX);
 		buttonP.add(searchDataX);
 		buttonP.add(searchXB);
-		buttonP.add(chooseSearchY);
-		buttonP.add(searchDataY);
-		buttonP.add(searchYB);
 		buttonP.add(chooseObjectX);
 		buttonP.add(chooseObjectY);
+		chooseObjectY.setVisible(false);
 		buttonP.add(addB);
 		buttonP.add(combinedObjectsBox);
 		buttonP.add(removeB);
 		buttonP.add(errorL);
 		buttonP.add(chooseX);
 		buttonP.add(chooseY);
+		chooseY.setVisible(false);
 		buttonP.add(graphB);
 		buttonP.add(rangeforX1);
 		buttonP.add(rangeforX2);
 		buttonP.add(applyXB);
-		buttonP.add(rangeforY1);
-		buttonP.add(rangeforY2);
-		buttonP.add(applyYB);
 		
 		add(buttonP, BorderLayout.NORTH);
 		buttonP.setVisible(false);
@@ -179,9 +181,7 @@ public class ChartPanel extends JPanel{
 	}
 	
 	protected void addData() {
-		DataObject newObject = new DataObject((DataObject) chooseObjectX.getSelectedItem());
-		newObject.addObject(new DataObject((DataObject) chooseObjectY.getSelectedItem()));
-		combinedObjectsBox.addItem(newObject);
+		combinedObjectsBox.addItem(new DataObject((DataObject) chooseObjectX.getSelectedItem()));
 	}
 	
 	protected void hideButtons() {
@@ -200,7 +200,7 @@ public class ChartPanel extends JPanel{
 		combinedObjectsBox.removeItemAt((combinedObjectsBox.getSelectedIndex()));
 	}
 	
-	protected boolean containsIgnoreCase(String str, String searchStr)     {
+	protected boolean containsIgnoreCase(String str, String searchStr){
 	    if(str == null || searchStr == null) return false;
 
 	    final int length = searchStr.length();
@@ -219,15 +219,6 @@ public class ChartPanel extends JPanel{
 		for(DataObject data : dataSet) {
 			if(containsIgnoreCase(data.getDataList().get(chooseSearchX.getSelectedIndex()-1), searchDataX.getText())){
 				chooseObjectX.addItem(data);
-			}
-		}
-	}
-	
-	protected void editChooseY() {
-		chooseObjectY.removeAllItems();
-		for(DataObject data : dataSet) {
-			if(containsIgnoreCase(data.getDataList().get(chooseSearchY.getSelectedIndex()-1), searchDataY.getText())){
-				chooseObjectY.addItem(data);
 			}
 		}
 	}
@@ -253,19 +244,7 @@ public class ChartPanel extends JPanel{
 				}
 			}
 			
-			if(event.getSource() == applyYB) {
-				try {
-					errorL.setVisible(false);
-					createChart();
-					graphData();
-					hideButtons();
-				}catch(Exception e) {
-					errorL.setVisible(true);
-					errorL.setText("Invalid range for Y1 to Y2 (Try clearing the ranges)");
-				}
-			}
-			
-			if(event.getSource() == addB && !chooseObjectX.getSelectedItem().toString().contains("Choose X Data:") && !chooseObjectY.getSelectedItem().toString().contains("Choose Y Data:")) {
+			if(event.getSource() == addB && !chooseObjectX.getSelectedItem().toString().contains("Choose X Data:")) {
 				addData();
 			}
 			
@@ -283,19 +262,11 @@ public class ChartPanel extends JPanel{
 				}
 			}
 			
-			if(event.getSource() == searchYB && chooseSearchY.getSelectedIndex() != 0) {
-				try {
-					errorL.setVisible(false);
-					editChooseY();
-				}catch(Exception e) {
-					errorL.setVisible(true);
-					errorL.setText("Invalid search for Y");
-				}
-			}
+
 			
 			if(event.getSource() == graphB) {
 				
-				if(chooseX.getSelectedIndex() == 0 || chooseY.getSelectedIndex() == 0 || combinedObjectsBox.getItemCount() < 1) {
+				if(combinedObjectsBox.getItemCount() < 1) {
 					errorL.setVisible(true);
 				}
 				else {
@@ -310,23 +281,6 @@ public class ChartPanel extends JPanel{
 				}
 			}
 		}
-	}
-	
-	protected boolean rangeCheckDataY(DataObject data) {
-		if(rangeforY1.getText().equals("") || rangeforY2.getText().equals("")) {
-			return true;
-		}
-		if(rangeforY1.getText().equals("Range1Y") || rangeforY2.getText().equals("Range2Y")) {
-			return true;
-		}
-		double checkD = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
-		double checkY1 = Double.parseDouble(rangeforY1.getText());
-		double checkY2 = Double.parseDouble(rangeforY2.getText());
-		if(checkY1 < checkD && checkD < checkY2) {
-			return true;
-		}
-		else 
-			return false;
 	}
 	
 	protected boolean rangeCheckDataX(DataObject data) {
@@ -346,72 +300,11 @@ public class ChartPanel extends JPanel{
 			return false;
 	}
 	
-	protected void compareAllData(DataObject data) {
-		int count2 = 0;
-		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
-				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
-				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
-				if (count2 != 0 && (count2 % 2) == 0){
-					chart.addSeries("Data: " + titleInt, xData, yData);
-					xData = new double[2];
-					yData = new double[2];
-					titleInt++;
-				}
-				
-				count2 ++;
-			}
-		}
-	}
-	
-	protected void compareAllDataToData(DataObject data) {
-		int count2 = 0;
-		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
-				xData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
-				yData[count2%2] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
-				
-				xData[count2%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseX.getSelectedIndex()-1));
-				yData[count2%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseY.getSelectedIndex()-1));
-				
-				chart.addSeries("Data: " + titleInt, xData, yData);
-				xData = new double[2];
-				yData = new double[2];
-				titleInt++;
-				
-				count2 += 2;
-			}
-		}
-	}
-	
-	protected void compareDataToAllData(DataObject data) {
-		int count2 = 0;
-		for(DataObject scanData : dataSet) {
-			if(rangeCheckDataY(scanData) || rangeCheckDataX(scanData)) {
-				xData[count2%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
-				yData[count2%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
-				
-				xData[count2%2+1] = Double.parseDouble(scanData.getDataList().get(chooseX.getSelectedIndex()-1));
-				yData[count2%2+1] = Double.parseDouble(scanData.getDataList().get(chooseY.getSelectedIndex()-1));
-				
-
-				chart.addSeries("Data: " + titleInt, xData, yData);
-				xData = new double[2];
-				yData = new double[2];
-				titleInt++;
-				
-				count2 += 2;
-			}
-		}
-	}
-	
 	protected void graphData() {
 		if(this.xPanel != null) {
 			remove(xPanel);
 		}
 		
-		xData = new double[2];
-		yData = new double[2];
 		titleInt = 0;
 		
 		HashSet<DataObject> compareDataSet = new HashSet<DataObject>();
@@ -420,32 +313,17 @@ public class ChartPanel extends JPanel{
 			compareDataSet.add((DataObject) combinedObjectsBox.getItemAt(scan));
 		}
 	
-		int count = 0;
 		for(DataObject data : compareDataSet) {
-			if(data.toString().substring(0, 8).contains("All Data") && data.getObject2().toString().substring(0, 8).contains("All Data")) {
-				compareAllData(data);
-			}
-			else if(data.toString().substring(0, 8).contains("All Data")) {
-				compareAllDataToData(data);
-			}
-			else if(data.getObject2().toString().substring(0, 8).contains("All Data")) {
-				compareDataToAllData(data);
-			}
-			else {
-				if(rangeCheckDataY(data) || rangeCheckDataX(data) && (rangeCheckDataY(data.getObject2()) || rangeCheckDataX(data.getObject2()))) {
-					xData[count%2] = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
-					yData[count%2] = Double.parseDouble(data.getDataList().get(chooseY.getSelectedIndex()-1));
-					
-					xData[count%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseX.getSelectedIndex()-1));
-					yData[count%2+1] = Double.parseDouble(data.getObject2().getDataList().get(chooseY.getSelectedIndex()-1));
-					
-					chart.addSeries("Data: " + titleInt, xData, yData);
-					xData = new double[2];
-					yData = new double[2];
+			if(data.toString().equals("All Data")) {
+				for(DataObject dataScan : dataSet) {
+					double dataDouble = Double.parseDouble(dataScan.getDataList().get(chooseX.getSelectedIndex()-1));
+					chart.addSeries("Data: " + titleInt, dataDouble);
 					titleInt++;
-					
-					count += 2;
 				}
+			}else {
+				double dataDouble = Double.parseDouble(data.getDataList().get(chooseX.getSelectedIndex()-1));
+				chart.addSeries("Data: " + titleInt, dataDouble);
+				titleInt++;
 			}
 		}
 	    
@@ -453,5 +331,4 @@ public class ChartPanel extends JPanel{
 		add(xPanel, BorderLayout.CENTER);
 		this.updateUI();
 	}
-	
 }
