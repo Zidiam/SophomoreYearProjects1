@@ -37,7 +37,7 @@ public class ChartPanel extends JPanel{
 	protected Styler styler;
 	
 	/**
-	 * This takes in a dataSet to that we can use that data to graph onto a area chart to make it more visual
+	 * This takes in a dataSet to that we can use that data to graph a chart to make it more visual
 	 * @param dataSet is a set of DataObjects so that we can graph the data
 	 */
 	public ChartPanel(HashSet<DataObject> dataSet) {
@@ -51,7 +51,7 @@ public class ChartPanel extends JPanel{
 	}
 	
 	/**
-	 * Used to build a chart specific for area charts
+	 * Used to build a specific chart
 	 */
 	protected void createChart() {
 		//type of chart you want
@@ -343,14 +343,14 @@ public class ChartPanel extends JPanel{
 					errorL.setVisible(true);
 				}
 				else {
-					//try {
+					try {
 						createChart();
 						graphData();
 						hideButtons();
-					//}catch(Exception e){
+					}catch(Exception e){
 						errorL.setText("Invalid inputs to create graph");
 						errorL.setVisible(true);
-					//}
+					}
 				}
 			}
 		}

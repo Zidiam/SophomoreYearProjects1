@@ -12,18 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.knowm.xchart.CategoryChart;
-import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.Styler.LegendPosition;
-import org.knowm.xchart.style.markers.SeriesMarkers;
 
+/*
+ * PieChartPanel -- A panel that contains a Pie chart and button controls that can edit that Pie chart
+ * By: Jason Melnik
+ * Date: 12/1/2019
+ */
 public class PieChartPanel extends JPanel{
 	protected HashSet<DataObject> dataSet;
 	protected JComboBox<String> chooseX, chooseY, chooseSearchX, chooseSearchY;
@@ -39,6 +38,10 @@ public class PieChartPanel extends JPanel{
 	protected int titleInt = 0;
 	protected Styler styler;
 	
+	/**
+	 * This takes in a dataSet to that we can use that data to graph onto a pie chart to make it more visual
+	 * @param dataSet is a set of DataObjects so that we can graph the data
+	 */
 	public PieChartPanel(HashSet<DataObject> dataSet) {
 		this.dataSet = dataSet;
 		this.setLayout(new BorderLayout());
@@ -49,6 +52,9 @@ public class PieChartPanel extends JPanel{
 		createChart();
 	}
 	
+	/**
+	 * Used to build a pie chart
+	 */
 	protected void createChart() {
 		chart = new PieChartBuilder().build();
 	    chart.getStyler().setLegendVisible(true);
@@ -56,6 +62,11 @@ public class PieChartPanel extends JPanel{
 	    chart.getStyler().setHasAnnotations(true);
 	}
 	
+	/**
+	 * This creates all the buttons and the button panel that contains all the buttons
+	 * This method also colors the buttons and sets them in the correct location
+	 * This method then adds the button panel to the classes Panel
+	 */
 	protected void setupButtons() {
 		buttonP = new JPanel();
 		buttonP.setLayout(new GridLayout(7, 3));
@@ -163,6 +174,10 @@ public class PieChartPanel extends JPanel{
 		add(editB, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * This sets up whats inside the JComboBox which would be the choices that the user can choose
+	 * This will add items in the JComboBox such as the data or the type of data
+	 */
 	protected void setupBoxContents() {
 		ArrayList<String> dataContents = DataObject.getDataContents();
 		
@@ -180,10 +195,16 @@ public class PieChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to your JComboBox called combinedObjectsBox which is a combination of two objects
+	 */
 	protected void addData() {
 		combinedObjectsBox.addItem(new DataObject((DataObject) chooseObjectX.getSelectedItem()));
 	}
 	
+	/**
+	 * This method is used to hide the big panel filled with buttons and just show one button that says edit
+	 */
 	protected void hideButtons() {
 		editB.setVisible(true);
 		buttonP.setVisible(false);
@@ -192,14 +213,27 @@ public class PieChartPanel extends JPanel{
 		errorL.setVisible(false);
 	}
 	
+	/**
+	 * This method just updates the jpanel
+	 */
 	protected void updateScreen() {
 		this.updateUI();
 	}
 	
+	/**
+	 * This method removes the data from the combinedObjectsBox which is the JComboBox 
+	 * that contains the objects that will be used to be compared
+	 */
 	protected void removeData() {
 		combinedObjectsBox.removeItemAt((combinedObjectsBox.getSelectedIndex()));
 	}
 	
+	/**
+	 * This method checks if a string contains certain characters ignoring case
+	 * @param str = this is the String we will check if its in the main string
+	 * @param searchStr = this is the main String in which will be used to see if a str is contained in it
+	 * @return this will return true if str is inside seachStr and false otherwise
+	 */
 	protected boolean containsIgnoreCase(String str, String searchStr){
 	    if(str == null || searchStr == null) return false;
 
@@ -214,6 +248,9 @@ public class PieChartPanel extends JPanel{
 	    return false;
 	}
 	
+	/**
+	 * This is to edit chooseObjectX and only have it contain what the people want to search for in search X
+	 */
 	protected void editChooseX() {
 		chooseObjectX.removeAllItems();
 		for(DataObject data : dataSet) {
@@ -223,6 +260,9 @@ public class PieChartPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This class will be used to hear action events that are caused in the buttons and do things to the graph
+	 */
 	protected class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource() == editB) {
@@ -270,19 +310,24 @@ public class PieChartPanel extends JPanel{
 					errorL.setVisible(true);
 				}
 				else {
-					//try {
+					try {
 						createChart();
 						graphData();
 						hideButtons();
-					//}catch(Exception e){
+					}catch(Exception e){
 						errorL.setText("Invalid inputs to create graph");
 						errorL.setVisible(true);
-					//}
+					}
 				}
 			}
 		}
 	}
 	
+	/**
+	 * This method filters out the graph so that only things in the X range are shown on the graph
+	 * @param data this takes in data to compare if weather or not the data object is within the bounds of the range of X
+	 * @return this returns true if data is in the range and false if not
+	 */
 	protected boolean rangeCheckDataX(DataObject data) {
 		if(rangeforX1.getText().equals("") || rangeforX2.getText().equals("")) {
 			return true;
@@ -300,6 +345,9 @@ public class PieChartPanel extends JPanel{
 			return false;
 	}
 	
+	/**
+	 * This method builds the graph full of data and then inputs in into the panel
+	 */
 	protected void graphData() {
 		if(this.xPanel != null) {
 			remove(xPanel);

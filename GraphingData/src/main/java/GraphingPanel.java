@@ -1,7 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,11 +22,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.knowm.xchart.QuickChart;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.XYChart;
-
+/*
+ * GraphingPanel -- A panel that contains the a panel that holds the controls to pick what kind of file to use and kind of graph
+ * It also contains the panel in which the graphing will be done in
+ * By: Jason Melnik
+ * Date: 12/1/2019
+ */
 public class GraphingPanel extends JPanel{
 	private JButton setupB, addFileB;
 	private HashSet<DataObject> dataSet;
@@ -43,6 +43,9 @@ public class GraphingPanel extends JPanel{
 	private JLabel errorL, versionL, creatorL, notesL;
 	private JPanel labelP;
 	
+	/**
+	 * This is the constructor which creates the panel
+	 */
 	public GraphingPanel() {
 		this.setBackground(Color.LIGHT_GRAY);
 		this.setLayout(new BorderLayout());
@@ -50,6 +53,10 @@ public class GraphingPanel extends JPanel{
 		setupLabels();
 	}
 	
+	/**
+	 * This sets up the labels that will be shown to the user before they do anything with the program
+	 * All the labels are put into a JLabel called labelP
+	 */
 	private void setupLabels() {
 		labelP = new JPanel();
 		
@@ -57,9 +64,9 @@ public class GraphingPanel extends JPanel{
 		
 		labelP.setLayout(new GridLayout());
 		
-		versionL = new JLabel("Version 1.2.2");
+		versionL = new JLabel("Version 1.3.0");
 		creatorL = new JLabel("Made by Jason Melnik");
-		notesL = new JLabel("Next Update: fixing the code so it looks cleaner");
+		notesL = new JLabel("If there is any bugs please report them to melnikjason@gmail.com");
 		
 		labelP.add(versionL);
 		labelP.add(creatorL);
@@ -68,6 +75,9 @@ public class GraphingPanel extends JPanel{
 		add(labelP, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * This sets up every component that the user interacts with and puts them into a panel called buttonP
+	 */
 	private void setupComponenet() {
 		this.setPreferredSize(new Dimension(1280, 720));
 		this.setLayout(new BorderLayout());
@@ -116,6 +126,9 @@ public class GraphingPanel extends JPanel{
 		add(buttonP, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * This opens a small GUI in which you can pick what files you want to add to the program to inspect later
+	 */
 	private void chooseFiles() {
 		JFileChooser fileChoose = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("EXCEL FILES(CSV)", "csv");
@@ -126,6 +139,9 @@ public class GraphingPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This class will be used to hear action events that the user causes and do the appropriate action with it
+	 */
 	private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			if(event.getSource() == addFileB) {
@@ -147,6 +163,10 @@ public class GraphingPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This sets up what kind of graph to display for the user to edit
+	 * @param graphType is a String that the method uses to determine what kind of graph the user wants to use
+	 */
 	private void graphData(String graphType) {
 		if(graphType.equals("QuickChart")) {
 			loadQuickChart();
@@ -171,48 +191,72 @@ public class GraphingPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This method just creates a QuickChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadQuickChart() {
 		quickP = new QuickChartPanel(dataSet);
 		add(quickP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a AreaChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadAreaChart() {
 		areaP = new AreaChartPanel(dataSet);
 		add(areaP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a LineChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadLineChart() {
 		lineP = new LineChartPanel(dataSet);
 		add(lineP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a StickChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadStickChart() {
 		stickP = new StickChartPanel(dataSet);
 		add(stickP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a ScatterChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadScatterChart() {
 		scatterP = new ScatterChartPanel(dataSet);
 		add(scatterP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a BarChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadBarChart() {
 		barP = new BarChartPanel(dataSet);
 		add(barP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This method just creates a BarChartPanel and then adds it to this panel for the user to use
+	 */
 	private void loadThemeChart() {
 		themeP = new PieChartPanel(dataSet);
 		add(themeP, BorderLayout.CENTER);
 		this.updateUI();
 	}
 	
+	/**
+	 * This removes the current graph that is in the panel
+	 */
 	private void removeGraphs() {
 		remove(labelP);
 		DataObject.setDataContents(new ArrayList<String>());
@@ -239,6 +283,10 @@ public class GraphingPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * This grabs all the data in the file and put it into dataSet
+	 * @param data is a File that is going to be used to get all the data from
+	 */
 	private void showFile(File data) {
 		try (
 	            Reader reader = Files.newBufferedReader(Paths.get(data.getAbsolutePath()));

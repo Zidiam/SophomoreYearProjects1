@@ -6,12 +6,28 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.style.Styler.LegendPosition;
 
+/*
+ * QuickChartPanel -- A panel that contains a quick chart and button controls that can edit that quick chart
+ * This class also extends ChartPanel to help reduce code since it will use the super classes other methods
+ * By: Jason Melnik
+ * Date: 12/1/2019
+ */
 public class QuickChartPanel extends ChartPanel{
 	private XYChart chart = null;
+	
+	/**
+	 * This takes in a dataSet to that we can use that data to graph onto a quick chart to make it more visual
+	 * @param dataSet is a set of DataObjects so that we can graph the data
+	 */
 	public QuickChartPanel(HashSet<DataObject> dataSet) {
 		super(dataSet);
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
+	@Override
 	protected void compareAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
@@ -40,6 +56,11 @@ public class QuickChartPanel extends ChartPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
+	@Override
 	protected void compareAllDataToData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
@@ -71,6 +92,11 @@ public class QuickChartPanel extends ChartPanel{
 		}
 	}
 	
+	/**
+	 * This method adds data to the chart
+	 * @param data is a DataObject that we use to compare all the data in the dataSet to that data
+	 */
+	@Override
 	protected void compareDataToAllData(DataObject data) {
 		int count2 = 0;
 		for(DataObject scanData : dataSet) {
@@ -102,6 +128,10 @@ public class QuickChartPanel extends ChartPanel{
 		}
 	}
 	
+	/**
+	 * This method builds the graph full of data and then inputs in into the panel
+	 */
+	@Override
 	protected void graphData() {
 		if(this.xPanel != null) {
 			remove(xPanel);
