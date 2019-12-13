@@ -15,13 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PermutationsPanel extends JPanel{
+public class LexicographicPanel extends JPanel{
 	private JButton enter;
 	private JLabel instructions, integers, limitL, error;
 	private JTextField text, limit;
 	private static Scanner scan = new Scanner(System.in);
 	
-	PermutationsPanel(){
+	LexicographicPanel(){
 		setBackground(Color.WHITE);
 		
 		addButtons();
@@ -91,7 +91,7 @@ public class PermutationsPanel extends JPanel{
 	
 	public void addButtons() {
 		enter = new JButton("Enter");
-		instructions = new JLabel("Enter below a list of integers and then click enter to calculate the next permutations! Example: 1 2 3 (You can also limit permitations)");
+		instructions = new JLabel("Enter below a list of integers and then click enter to calculate the next number in lexicographic order! Example: 1 2 3");
 		text = new JTextField("1 2 3 4");
 		limit = new JTextField("15");
 		integers = new JLabel("Enter Integers:");

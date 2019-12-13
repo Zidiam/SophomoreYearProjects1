@@ -42,9 +42,9 @@ public class DMC_Panel extends JPanel {
     }
     
     public void setupTabPanel1() {
-    	panel1 = new PermutationsPanel();
+    	panel1 = new LexicographicPanel();
   
-        tabbedPane.addTab("Permutations", icon, panel1, "Calculates Permutations");
+        tabbedPane.addTab("Lexicographic", icon, panel1, "Calculates the next number in lexicographic order");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
     }
     

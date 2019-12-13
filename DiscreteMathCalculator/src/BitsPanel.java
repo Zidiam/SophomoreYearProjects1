@@ -91,7 +91,7 @@ public class BitsPanel extends JPanel{
 	
 	public void addButtons() {
 		enter = new JButton("Enter");
-		instructions = new JLabel("Enter below a bit string and then click enter to calculate the next bit string! Example: 0 1 0 (You can also limit how many bit strings)");
+		instructions = new JLabel("Enter below a bit string and then click enter to calculate the next bit string in lexicographic order! Example: 0 1 0");
 		text = new JTextField("0 0 1 0");
 		limit = new JTextField("15");
 		integers = new JLabel("Enter Integers:");
