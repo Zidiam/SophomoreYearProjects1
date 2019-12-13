@@ -67,7 +67,6 @@ public class rComboPanel extends JPanel{
 					temp.setBounds(x, y + 25, len*25, 25);
 					labels.add(temp);
 					add(temp);
-					System.out.println("test");
 					y += 25;
 					if(y >= 450) {
 						x += len*25 - 25;

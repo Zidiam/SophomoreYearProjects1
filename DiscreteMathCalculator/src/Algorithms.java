@@ -64,9 +64,7 @@ public class Algorithms {
 		while(bits[i] == 1) {
 			bits[i] = 0;
 			i --;
-			System.out.println(i);
 		}
-		System.out.println(i);
 		bits[i] = 1;
 		return bits;
 	}
